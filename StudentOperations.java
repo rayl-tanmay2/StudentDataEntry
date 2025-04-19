@@ -77,4 +77,17 @@
          }
          return null;
      }
+  
+     // Search by Position (index from 0)
+     public Student searchByPosition(int pos) {
+         try (Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM students");
+             if (rs.absolute(pos + 1)) {
+                 return new Student(rs.getLong("prn"), rs.getString("name"), rs.getString("branch"), rs.getString("batch"), rs.getDouble("cgpa"));
+             }
+         } catch (SQLException e) {
+             System.out.println("Error: " + e.getMessage());
+         }
+         return null;
+     }
  }
